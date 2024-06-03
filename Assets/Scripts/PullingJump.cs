@@ -40,6 +40,14 @@ public class PullingJump : MonoBehaviour
             rb.velocity = dist.normalized * jumpForce;
         }
 
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            Physics.gravity = new Vector3(0, 15.28f, 0);
+        }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Physics.gravity = new Vector3(0, -15.28f, 0);
+        }
     }
 }
