@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class ItemScript : MonoBehaviour
 {
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        DestroySelf();
+        animator.SetTrigger("Get");
     }
 
     private void DestroySelf()
