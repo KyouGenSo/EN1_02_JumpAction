@@ -57,5 +57,15 @@ public class PullingJump : MonoBehaviour
         {
             Physics.gravity = new Vector3(0, -15.28f, 0);
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Physics.gravity += new Vector3(0, 1, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Physics.gravity -= new Vector3(0, 1, 0);
+        }
     }
 }
