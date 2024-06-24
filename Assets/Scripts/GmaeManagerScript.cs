@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GmaeManagerScript : MonoBehaviour
 {
-    public string nextSceneName;
+    [SerializeField]
+    private string nextSceneName;
 
     private void Update()
     {

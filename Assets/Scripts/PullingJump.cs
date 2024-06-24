@@ -6,8 +6,8 @@ public class PullingJump : MonoBehaviour
 {
     private Rigidbody rb;
     private Vector3 clickPos;
-    [SerializeField] 
-    private float jumpForce = 10.0f;
+    [SerializeField]
+    private float jumpForce;
     bool isJumping = false;
 
     private void OnCollisionStay(Collision collision)
@@ -15,11 +15,25 @@ public class PullingJump : MonoBehaviour
         ContactPoint contact = collision.contacts[0];
         Vector3 normal = contact.normal;
         Vector3 upVector = new Vector3(0, 1, 0);
+        Vector3 downVector = new Vector3(0, -1, 0);
         float dotUN = Vector3.Dot(upVector, normal);
-        float dotAngle = Mathf.Acos(dotUN) * Mathf.Rad2Deg;
-        if (dotAngle <= 45)
+        float dotDN = Vector3.Dot(downVector, normal);
+        float dotUpAngle = Mathf.Acos(dotUN) * Mathf.Rad2Deg;
+        float dotDownAngle = Mathf.Acos(dotDN) * Mathf.Rad2Deg;
+
+        if (Physics.gravity.y < 0)
         {
-            isJumping = false;
+            if (dotUpAngle <= 45)
+            {
+                isJumping = false;
+            }
+        }
+        else
+        {
+            if (dotDownAngle <= 45)
+            {
+                isJumping = false;
+            }
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -43,19 +57,16 @@ public class PullingJump : MonoBehaviour
 
         if(Input.GetMouseButtonUp(0) && !isJumping)
         {
-            Vector3 dist = clickPos - Input.mousePosition;
-            if(dist.sqrMagnitude == 0) { return; }
-            rb.velocity = dist.normalized * jumpForce;
+            Vector3 dir = clickPos - Input.mousePosition;
+            float distance = dir.magnitude / 15;
+            if (dir.sqrMagnitude == 0) { return; }
+            if (distance > jumpForce) { distance = jumpForce; }
+            rb.velocity = dir.normalized * distance;
         }
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            Physics.gravity = new Vector3(0, 15.28f, 0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Physics.gravity = new Vector3(0, -15.28f, 0);
+            Physics.gravity = new Vector3(0, -Physics.gravity.y, 0);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
